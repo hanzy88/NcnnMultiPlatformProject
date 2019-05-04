@@ -1,0 +1,36 @@
+7767517
+34 35
+Input            input_1:0                0 1 input_1:0
+MemoryData       dense/bias:0             0 1 dense/bias:0 0=10
+MemoryData       conv2d_1/bias:0          0 1 conv2d_1/bias:0 0=4
+MemoryData       conv2d/bias:0            0 1 conv2d/bias:0 0=8
+Permute          conv2d/Conv2D__13        1 1 input_1:0 conv2d/Conv2D__13:0 0=4
+Identity         dropout/cond/pred_id     0 1 dropout/cond/pred_id:0
+Unsqueeze        flatten/Reshape/shape_Unsqueeze__23 0 1 flatten/Reshape/shape_Unsqueeze__23:0
+Convolution      conv2d/Conv2D            1 1 conv2d/Conv2D__13:0 conv2d/Conv2D:0 0=8 1=3 11=3 2=1 12=1 3=1 13=1 4=1 14=1 5=0 6=72
+Permute          conv2d/Conv2D__14        1 1 conv2d/Conv2D:0 conv2d/Conv2D__14:0 0=3
+BinaryOp         conv2d/BiasAdd           2 1 conv2d/Conv2D__14:0 conv2d/bias:0 conv2d/BiasAdd:0 0=0
+ReLU             conv2d/Relu              1 1 conv2d/BiasAdd:0 conv2d/Relu:0
+Permute          max_pooling2d/MaxPool__15 1 1 conv2d/Relu:0 max_pooling2d/MaxPool__15:0 0=4
+Pooling          max_pooling2d/MaxPool    1 1 max_pooling2d/MaxPool__15:0 max_pooling2d/MaxPool:0 0=0 1=2 11=2 2=2 12=2 5=1
+Permute          max_pooling2d/MaxPool__16 1 1 max_pooling2d/MaxPool:0 max_pooling2d/MaxPool__16:0 0=3
+Permute          conv2d_1/Conv2D__17      1 1 max_pooling2d/MaxPool__16:0 conv2d_1/Conv2D__17:0 0=4
+Convolution      conv2d_1/Conv2D          1 1 conv2d_1/Conv2D__17:0 conv2d_1/Conv2D:0 0=4 1=3 11=3 2=1 12=1 3=1 13=1 4=1 14=1 5=0 6=288
+Permute          conv2d_1/Conv2D__18      1 1 conv2d_1/Conv2D:0 conv2d_1/Conv2D__18:0 0=3
+BinaryOp         conv2d_1/BiasAdd         2 1 conv2d_1/Conv2D__18:0 conv2d_1/bias:0 conv2d_1/BiasAdd:0 0=0
+ReLU             conv2d_1/Relu            1 1 conv2d_1/BiasAdd:0 conv2d_1/Relu:0
+If               dropout/cond_If__10      1 1 dropout/cond/pred_id:0 dropout/cond/Merge:0
+Split            splitncnn_0              1 2 dropout/cond/Merge:0 dropout/cond/Merge:0_splitncnn_0 dropout/cond/Merge:0_splitncnn_1
+Shape            flatten/Shape            1 1 dropout/cond/Merge:0_splitncnn_1 flatten/Shape:0
+Cast             flatten/Shape__19        1 1 flatten/Shape:0 flatten/Shape__19:0
+Crop             flatten/strided_slice    1 1 flatten/Shape__19:0 flatten/strided_slice:0 0=0 1=0 2=0 3=-233 4=-233 5=-233
+Squeeze          flatten/strided_slice__20 1 1 flatten/strided_slice:0 flatten/strided_slice__20:0
+Cast             flatten/strided_slice__21 1 1 flatten/strided_slice__20:0 flatten/strided_slice__21:0
+Unsqueeze        flatten/Reshape/shape_Unsqueeze__22 1 1 flatten/strided_slice__21:0 flatten/Reshape/shape_Unsqueeze__22:0
+Concat           flatten/Reshape/shape_Concat__24 2 1 flatten/Reshape/shape_Unsqueeze__22:0 flatten/Reshape/shape_Unsqueeze__23:0 flatten/Reshape/shape_Concat__24:0 0=-1
+Cast             flatten/Reshape__25      1 1 flatten/Reshape/shape_Concat__24:0 flatten/Reshape__25:0
+Reshape          flatten/Reshape          2 1 dropout/cond/Merge:0_splitncnn_0 flatten/Reshape__25:0 flatten/Reshape:0
+InnerProduct     dense/MatMul             1 1 flatten/Reshape:0 dense/MatMul:0 0=10 1=0 2=7840
+BinaryOp         dense/BiasAdd            2 1 dense/MatMul:0 dense/bias:0 dense/BiasAdd:0 0=0
+Softmax          dense/Softmax            1 1 dense/BiasAdd:0 dense/Softmax_raw_output___3:0 0=0 1=1
+Identity         dense/Softmax_graph_outputs_Identity__4 1 1 dense/Softmax_raw_output___3:0 dense/Softmax:0
