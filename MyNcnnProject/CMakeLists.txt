@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8.10)
 
 # Create executable file
-add_executable(MyNcNNProject
+add_executable(MyNcnnProject
 	Main.cpp
 )
 
 # Set include path
-target_include_directories(MyNcNNProject PUBLIC
+target_include_directories(MyNcnnProject PUBLIC
 	./
 )
 
@@ -41,8 +41,8 @@ else()
 	set(NCNN_INC ${CMAKE_CURRENT_BINARY_DIR}/ncnn/src)
 endif()
 
-target_link_libraries(MyProject ${NCNN_LIB})
-target_include_directories(MyProject PUBLIC
+target_link_libraries(MyNcnnProject ${NCNN_LIB})
+target_include_directories(MyNcnnProject PUBLIC
 	${NCNN_INC}
 )
 
@@ -50,8 +50,8 @@ target_include_directories(MyProject PUBLIC
 # For OpenCV
 find_package(OpenCV REQUIRED)
 if(OpenCV_FOUND)
-	target_include_directories(MyProject PUBLIC ${OpenCV_INCLUDE_DIRS})
-	target_link_libraries(MyProject ${OpenCV_LIBS})
+	target_include_directories(MyNcnnProject PUBLIC ${OpenCV_INCLUDE_DIRS})
+	target_link_libraries(MyNcnnProject ${OpenCV_LIBS})
 endif()
 
 # Copy resouce
