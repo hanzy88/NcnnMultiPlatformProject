@@ -9,7 +9,7 @@ git submodule update
 ```
 
 ### Windows (Visual Studio 2017)
-- Configure and Generate a new project using cmake-gui for Visual Studio 2017 64-bit)
+- Configure and Generate a new project using cmake-gui for Visual Studio 2017 64-bit
 - Start `MyNcnnProject.sln`
 - Set `MyProject` project as a startup project, then build and run!
 

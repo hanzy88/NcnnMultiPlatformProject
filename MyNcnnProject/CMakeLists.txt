@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 2.8.10)
 # Create executable file
 add_executable(MyProject
 	Main.cpp
-	${SOURCE}
 )
 
 # Set include path
@@ -22,18 +21,18 @@ if(USE_PREBUILT_NCNN)
 				"$<$<CONFIG:Debug>:${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_vs2017/ncnnd.lib>"
 				"$<$<CONFIG:RelWithDebInfo>:${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_vs2017/ncnn_withd.lib>"
 			)
-			set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_vs2017/generated_include)
+			set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_vs2017/include)
 		else()
 			message(FATAL_ERROR "FATAL_ERROR: pre-built lib is not supported for the selected Visual Studio version")
 		endif()
 	elseif(${ARCH_TYPE} STREQUAL ARMV7)
 		message("ncnn pre-built lib for ARM v7")
 		set(NCNN_LIB ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/armv7/libncnn.a)  
-		set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/armv7/generated_include)
+		set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/armv7/include)
 	elseif(${ARCH_TYPE} STREQUAL LINUX)
 		message("ncnn pre-built lib for PC Linux")
 		set(NCNN_LIB ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_linux/libncnn.a)  
-		set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_linux/generated_include)
+		set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_linux/include)
 	endif()
 else()
 	message("ncnn build enabled")
@@ -44,7 +43,6 @@ endif()
 
 target_link_libraries(MyProject ${NCNN_LIB})
 target_include_directories(MyProject PUBLIC
-	${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn/src
 	${NCNN_INC}
 )
 
