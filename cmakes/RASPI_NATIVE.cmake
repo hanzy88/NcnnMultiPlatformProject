@@ -1,4 +1,4 @@
-set(ARCH_TYPE ARM)
+set(ARCH_TYPE ARMV7)
 set(CMAKE_BUILD_TYPE release)
 # set(CMAKE_BUILD_TYPE debug)
 # or
