@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8.10)
 
 # Create executable file
-add_executable(MyProject
+add_executable(MyNcNNProject
 	Main.cpp
 )
 
 # Set include path
-target_include_directories(MyProject PUBLIC
+target_include_directories(MyNcNNProject PUBLIC
 	./
 )
 
