@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8.10)
 
 # Create executable file
-add_executable(MyNcnnProject
-	Main.cpp
-)
+set(SRC Main.cpp)
+if(ENABLE_VULKAN)
+	set(SRC ${SRC} TestVulkan)
+endif()
+add_executable(MyNcnnProject ${SRC})
 
 # Set include path
 target_include_directories(MyNcnnProject PUBLIC
@@ -29,6 +31,12 @@ if(USE_PREBUILT_NCNN)
 		message("ncnn pre-built lib for ARM v7")
 		set(NCNN_LIB ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/armv7/libncnn.a)  
 		set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/armv7/include)
+	elseif(${ARCH_TYPE} STREQUAL JETSON)
+		message("ncnn pre-built lib for Jetson Nano (ARM v8a + vulkan)")
+		set(NCNN_LIB 
+			${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/jetson/libncnn.a
+			/usr/lib/aarch64-linux-gnu/libvulkan.so)	## need to be changed depending on the environment
+		set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/jetson/include)
 	elseif(${ARCH_TYPE} STREQUAL LINUX)
 		message("ncnn pre-built lib for PC Linux")
 		set(NCNN_LIB ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_linux/libncnn.a)  

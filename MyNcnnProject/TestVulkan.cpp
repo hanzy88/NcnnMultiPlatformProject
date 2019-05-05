@@ -3,32 +3,25 @@
 #include <opencv2/opencv.hpp>
 #include "net.h"
 
-extern void TestNormal(void);
-extern void TestVulkan(void);
-
-int main()
-{
-	TestNormal();
-#ifdef ENABLE_VULKAN
-	TestVulkan();
-#endif
-	return 0;
-}
-
 
 #define MODEL_WIDTH 224
 #define MODEL_HEIGHT 224
 //#define MODEL_CHANNEL ncnn::Mat::PIXEL_GRAY
 #define MODEL_CHANNEL ncnn::Mat::PIXEL_BGR
-void TestNormal(void)
+void TestVulkan(void)
 {
-	printf("TestNormal\n");
+	printf("TestVulkan\n");
+
+	/*** initialize when app starts ***/
+	ncnn::create_gpu_instance();
+	printf("GPU Count: %d\n", ncnn::get_gpu_count());
 
 	/*** Load ncnn model (probably, need this only once) ***/
 	ncnn::Net net;
+	net.use_vulkan_compute = 1;		// it looks like, this line must be the first
 	net.load_param(RESOURCE_DIR"ncnn_mobilenet.param");
 	net.load_model(RESOURCE_DIR"ncnn_mobilenet.bin");
-
+	
 	/*** Read image using OpenCV ***/
 	cv::Mat image = cv::imread(RESOURCE_DIR"parrot.jpg", (MODEL_CHANNEL == ncnn::Mat::PIXEL_GRAY) ? CV_LOAD_IMAGE_GRAYSCALE : CV_LOAD_IMAGE_COLOR);
 	cv::imshow("Display", image);
@@ -41,6 +34,7 @@ void TestNormal(void)
 
 	/*** Prepare inference ***/
 	ncnn::Extractor ex = net.create_extractor();
+	ex.set_vulkan_compute(true);
 	ex.set_light_mode(true);
 	ex.set_num_threads(4);
 	ex.input("data", ncnnMat);
@@ -72,6 +66,9 @@ void TestNormal(void)
 	double inferenceTime = std::chrono::duration_cast<std::chrono::milliseconds>(t1-t0).count();
 	printf("Inference time: %.2lf [msec]\n", inferenceTime);
 	//delete[] results;
+
+	/*** deinitialize when app exits ***/
+	ncnn::destroy_gpu_instance();
 
 	// cv::waitKey(0);
 }
