@@ -3,7 +3,6 @@ project(MyNcnnProject)
 
 # Switch build target
 set(BUILD_TARGET PC CACHE STRING "Build target?")
-set(LINK_ONLY OFF CACHE BOOL "Use pre-built library?")
 
 # Common build settings
 include(cmakes/common.cmake)

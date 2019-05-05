@@ -38,7 +38,8 @@ else()
 	message("ncnn build enabled")
 	add_subdirectory(${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn ncnn)
 	set(NCNN_LIB ncnn)
-	set(NCNN_INC ${CMAKE_CURRENT_BINARY_DIR}/ncnn/src)
+	set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn/src)
+	set(NCNN_INC ${PROJECT_SOURCE_DIR}/ExternalLibs/ncnn_prebuilt/x64_vs2017/include)	## for windows
 endif()
 
 target_link_libraries(MyNcnnProject ${NCNN_LIB})
