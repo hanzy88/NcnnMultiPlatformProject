@@ -46,3 +46,13 @@ cd MyNcnnProject && ./MyNcnnProject
 ```
 
 
+### Jetson Nano (Native build)
+```sh
+cd NcnnMultiPlatformProject
+mkdir build && cd build
+cmake .. -DBUILD_TARGET=JETSON
+make
+cd MyNcnnProject && ./MyNcnnProject
+```
+
+
